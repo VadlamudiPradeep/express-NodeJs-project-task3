@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login</title>
+    <link rel="stylesheet" href="./login.css">
+</head>
+<body>
+    <form action="" onsubmit="login(event)">
+        <label for="email">Email</label>
+        <input type="email" name="email" required placeholder="email...">
+        <br />
+        <label for="Password">Password</label>
+        <input type="password" name="password" required placeholder="password...">
+        <br />
+        <button>Submit</button>
+    </form>
+    <button onclick="forgotpassword()"> Forgot password</button><br />
+    <a href="../signup.html">New User - Signup Now</a>
+
+    <!-- axios - for network call --> 
+    <script src="https://cdn.jsdelivr.net/npm/axios@1.1.2/dist/axios.min.js"></script>
+        
+    <script src="./login.js"></script>
+</body>
+</html>
