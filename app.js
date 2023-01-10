@@ -17,6 +17,12 @@ const userRoutes = require('./routes/userRoutes');
 // use routes '/user' automatically add 'user' before link.
 app.use('/user', userRoutes);
 
+const expenseRoutes = require('./routes/expenseRoutes');
+app.use('/expense', expenseRoutes);
+
+
+
+
 
 
 // if database sync then start the server.
