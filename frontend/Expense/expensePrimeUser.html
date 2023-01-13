@@ -10,11 +10,12 @@
   <body>
     <header>
       <nav>
-        <h2>Expense App</h2>
+        <h2>Expense App Premium</h2>
       </nav>
     </header>
 
-    <main style="border: 5px red solid; background-color: orange;">
+    <main style="border: 5px red solid; background-color: green;">
+      <h3 style="text-align: center;">PRIME USER</h3>
       <form class="form" id="formId" action="#" onsubmit="saveToDB(event)">
         <div class="form-control">
           <label>Choose Expenses Amount</label>
@@ -36,16 +37,17 @@
 
       <!-- Pagination -->
       <ul id="list" class="list"></ul>      
-        
-      <div class="pages-container"></div>
+     
+      <!-- Download -->
+      <button onclick="download()" id="downloadexpense">Download File</button>
+      
+      <!-- Razorpay -->
+      <button id="rzp-button1">Buy Premium</button>
+      
   </main>
 
     <!-- axios - for network call --> 
-<<<<<<< HEAD
     <script src="https://cdn.jsdelivr.net/npm/axios@1.1.2/dist/axios.min.js"></script>
-=======
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.2.2/axios.min.js" integrity="sha512-QTnb9BQkG4fBYIt9JGvYmxPpd6TBeKp6lsUrtiVQsrJ9sb33Bn9s0wMQO9qVBFbPX3xHRAsBHvXlcsrnJjExjg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
->>>>>>> ceaee63 (Authorization_To_Backend_To_Database)
         
     <script src="./expense.js"></script>
   </body>
