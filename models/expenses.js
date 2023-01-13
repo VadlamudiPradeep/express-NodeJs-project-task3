@@ -12,7 +12,12 @@ const User = sequelize.define('expense', {
     
     expenseamount: Sequelize.INTEGER,
     category: Sequelize.STRING,
+<<<<<<< HEAD
     description: Sequelize.TEXT,
+=======
+    description: Sequelize.STRING,
+    
+>>>>>>> ceaee63 (Authorization_To_Backend_To_Database)
 })
 
 module.exports = User;
