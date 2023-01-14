@@ -1,4 +1,4 @@
-function forgetpassword(e){
+function forgotpassword(e){
     e.preventDefault();
     
     let form = new FormData(e.target);
@@ -6,7 +6,7 @@ function forgetpassword(e){
     let userDetails = {
         email : form.get('email')
     };
-axios.post('http://localhost:3000/password/forgetpassword' , userDetails)
+axios.post('http://localhost:3000/password/forgotpassword' , userDetails)
 .then((response)=>{
     if(response.status === 200){
         document.body.innerHTML += `<div>Mail successfully Sent</div>`

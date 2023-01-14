@@ -9,7 +9,7 @@ const purchasePremium =async (req, res) => {
             key_id: process.env.RAZORPAY_KEY_ID,
             key_secret: process.env.RAZORPAY_KEY_SECRET
         })
-        const amount = 2500;
+        const amount = 200;
 
         rzp.orders.create({amount, currency: "INR"}, (err, order) => {
             if(err) {
@@ -37,7 +37,7 @@ const purchasePremium =async (req, res) => {
         const promise2 =  req.user.update({ ispremiumuser: true }) 
 
         Promise.all([promise1, promise2]).then(()=> {
-            return res.status(202).json({sucess: true, message: "Transaction Successful", token: userController.generateAccessToken(userId,undefined , true) });
+            return res.status(202).json({success: true, message: "Transaction Successful", token: userController.generateAccessToken(userId ,undefined , true) });
         }).catch((error ) => {
             throw new Error(error)
         })

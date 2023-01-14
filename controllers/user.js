@@ -30,7 +30,7 @@ function isStringValid(string){
 }
 
 const generateAccessToken = (id, name, ispremiumuser) => {
-    return jwt.sign({ userId : id, name: name, ispremiumuser : ispremiumuser } ,'secretkey');
+    return jwt.sign({ userId : id, name, ispremiumuser } ,'secretkey');
 }
 
 const login = async (req, res) => {
