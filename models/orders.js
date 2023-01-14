@@ -1,19 +1,18 @@
 const Sequelize = require('sequelize');
 const sequelize = require('../util/database');
 
-// create user table - expense
-const User = sequelize.define('expense', {
+//id, name , password, phone number, role
+
+const Order = sequelize.define('order', {
     id: {
         type: Sequelize.INTEGER,
         autoIncrement: true,
         allowNull: false,
         primaryKey: true
     },
-    
-    expenseamount: Sequelize.INTEGER,
-    category: Sequelize.STRING,
-    description: Sequelize.STRING,
-    
+    paymentid: Sequelize.STRING,
+    orderid: Sequelize.STRING,
+    status: Sequelize.STRING
 })
 
-module.exports = User;
+module.exports = Order;
