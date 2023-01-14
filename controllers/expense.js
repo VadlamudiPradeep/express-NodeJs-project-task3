@@ -10,7 +10,7 @@ function isStringValid(string){
 }
 const addExpense = (req, res) => {
     const { expenseamount, description, category } = req.body;
-
+console.log('exp-amount :'+ expenseamount)
     if(isStringValid(expenseamount) || isStringValid(description) || isStringValid(category) ){
         return res.status(400).json({success: false, message: 'Parameters missing'})
     }
