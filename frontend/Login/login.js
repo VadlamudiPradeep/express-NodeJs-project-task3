@@ -20,4 +20,9 @@ async function login(e) {
         // JSON.stringify() method converts a JavaScript value to a JSON string.
         document.body.innerHTML += `<div style="color:red;">${err.message}<div>`;
     }
+};
+
+
+function forgotpassword() {
+    window.location.href = "../ForgetPassword/forgetPassword.html"
 }
