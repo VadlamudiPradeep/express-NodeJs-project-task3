@@ -1,9 +1,17 @@
 const Expense = require('../models/expenses');
 
+
+function isStringValid(string){
+    if(string === undefined || string.length === 0){
+        return true;
+    }else{
+        return false;
+    }
+}
 const addExpense = (req, res) => {
     const { expenseamount, description, category } = req.body;
 
-    if(expenseamount == undefined || expenseamount.length === 0 ){
+    if(isStringValid(expenseamount) || isStringValid(description) || isStringValid(category) ){
         return res.status(400).json({success: false, message: 'Parameters missing'})
     }
     

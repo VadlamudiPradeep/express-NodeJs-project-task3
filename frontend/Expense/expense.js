@@ -1,8 +1,3 @@
-<<<<<<< HEAD
-const token = localStorage.getItem('token');
-=======
->>>>>>> ceaee63 (Authorization_To_Backend_To_Database)
-
 async function saveToDB(e) {
     try{
         e.preventDefault();
@@ -13,44 +8,6 @@ async function saveToDB(e) {
             description: e.target.description.value,
             category: e.target.category.value
         }
-<<<<<<< HEAD
-        console.log(addExpense)
-        const response = await axios.post('http://localhost:3000/expense/addExpense', addExpense , {headers : {'Authorization': token}})
-                alert(response.data.message)
-                if(response.status === 201){
-                    addNewExpensetoUI(response.data.expense);
-                }else{
-                    throw new Error(err)
-                }
-               
-        
-    } catch(err) {
-        document.body.innerHTML += `<div style="color:red">${err} </div>`
-    }
-}
-
-// // // DOMContentLoaded
-window.addEventListener('DOMContentLoaded',  () => {
-
-         axios.get('http://localhost:3000/expense/getExpense', { headers: {"Authorization" : token } }).then(response => {
-        response.data.expenses.forEach(expense=>{
-        addNewExpensetoUI(expense);
-        });
-        })
-        .catch(err=>{
-         showError(err);
-       } );
-    
-})
-
-
-// // Show Expense to DOM / UI
-async function addNewExpensetoUI(expense) {
-    try{
-    //     document.getElementById("amount").value = '';
-    // document.getElementById("description").value = '';
-    // document.getElementById("category").value = '';
-=======
         console.log(addExpense);
 
         var token = localStorage.getItem('token');
@@ -73,11 +30,18 @@ function parseJwt (token) {
 
     return JSON.parse(jsonPayload);
 }
-// // // DOMContentLoaded
+
+
+
+// DOMContentLoaded
 window.addEventListener('DOMContentLoaded',  () => {
     const token  = localStorage.getItem('token')
     const decodeToken = parseJwt(token)
     console.log(decodeToken)
+    const ispremiumuser = decodeToken.ispremiumuser
+    if(ispremiumuser){
+        showLeaderboard();
+    }
 
     axios.get('http://localhost:3000/expense/getExpense',{headers:{'Authorization': token}}).then(response => {
     
@@ -98,18 +62,13 @@ function addNewExpensetoUI(expense) {
     document.getElementById("amount").value = '';
     document.getElementById("description").value = '';
     document.getElementById("category").value = '';
->>>>>>> ceaee63 (Authorization_To_Backend_To_Database)
 
     // const parentElement = document.getElementById('expenseTracker');
     const parentElement = document.getElementById('list');
     const expenseElemId = `expense-${expense.id}`;
     parentElement.innerHTML += `
         <li id=${expenseElemId}>
-<<<<<<< HEAD
-            ${expense.expenseamount} - ${expense.description} - ${expense.category} 
-=======
             ${expense.expenseamount} - ${expense.category} - ${expense.description}
->>>>>>> ceaee63 (Authorization_To_Backend_To_Database)
             <button onclick='deleteExpense(event, ${expense.id})'>
                 Delete Expense
             </button>
@@ -121,31 +80,6 @@ function addNewExpensetoUI(expense) {
 }
 
 // Delete Expense
-<<<<<<< HEAD
-function deleteExpense(e, expenseId) {
-    
-    axios.delete(`http://localhost:3000/expense/deleteExpense/${expenseId}`, { headers: {"Authorization" : token } }).then((response) => {
-       
-         alert(response.data.message);
-          removeExpensefromUI(expenseId);
-      
-    })
-    .catch(err=>{
-   showError(err);
-    })
-}
-
-// // Remove from UI
-function removeExpensefromUI(expenseId){
-    const expenseElemId = `expense-${expenseId}`;
-    document.getElementById(expenseElemId).remove();
-}
-
-// // // Show Error
-function showError(err){
-    document.body.innerHTML += `<div style="color:red"> ${err}</div>`
-}
-=======
 function deleteExpense(e, expenseid) {
     try{
         const token = localStorage.getItem('token');
@@ -167,8 +101,60 @@ function removeExpensefromUI(expenseid){
     document.getElementById(expenseElemId).remove();
 }
 
+document.getElementById('rzp-button1').onclick = async function (e) {
+    const token = localStorage.getItem('token')
+    const response  = await axios.get('http://localhost:3000/purchase/premiummembership', { headers: {"Authorization" : token} });
+    console.log(response);
+    var options =
+    {
+     "key": response.data.key_id, // Enter the Key ID generated from the Dashboard
+     "order_id": response.data.order.id,// For one time payment
+     // This handler function will handle the success payment
+     "handler": async function (response) {
+        const res = await axios.post('http://localhost:3000/purchase/updatetransactionstatus',{
+             order_id: options.order_id,
+             payment_id: response.razorpay_payment_id,
+         }, { headers: {"Authorization" : token} })
+        
+        console.log(res)
+         alert('You are a Premium User Now')
+         document.getElementById('rzp-button1').style.visibility = "hidden"
+         document.getElementById('message').innerHTML = "You are a premium user "
+         localStorage.setItem('token', res.data.token)
+         showLeaderboard()
+     },
+  };
+  const rzp1 = new Razorpay(options);
+  rzp1.open();
+  e.preventDefault();
+
+  rzp1.on('payment.failed', function (response){
+    console.log(response)
+    alert('Something went wrong')
+ });
+}
 // Show Error
 function showError(err){
     document.body.innerHTML += `<div style="color:red;"> ${err}</div>`
+};  
+
+///leaderBoard 
+
+function showLeaderboard(){
+    const inputElement = document.createElement("input")
+    inputElement.type = "button"
+    inputElement.value = 'Show Leaderboard'
+    inputElement.onclick = async() => {
+        const token = localStorage.getItem('token')
+        const userLeaderBoardArray = await axios.get('http://localhost:3000/premium/showLeaderBoard', { headers: {"Authorization" : token} })
+        console.log(userLeaderBoardArray)
+
+        var leaderboardElem = document.getElementById('leaderboard')
+        leaderboardElem.innerHTML += '<h1> Leader Board </<h1>'
+        userLeaderBoardArray.data.forEach((userDetails) => {
+            leaderboardElem.innerHTML += `<li>Name - ${userDetails.name} Total Expense - ${userDetails.total_cost || 0} </li>`
+        })
+    }
+    document.getElementById("message").appendChild(inputElement);
+
 }
->>>>>>> ceaee63 (Authorization_To_Backend_To_Database)
