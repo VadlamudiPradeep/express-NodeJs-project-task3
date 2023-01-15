@@ -1,41 +1,81 @@
-let uuid = require('uuid');
-let sendGridMail = require('@sendgrid/mail');
-//sendGridMail.setApiKey(process.env.SENDGRID_API_KEY)
-let bcrypt = require('bcrypt');
+const uuid = require('uuid');
+const sgMail = require('@sendgrid/mail');
+const bcrypt = require('bcrypt');
 
-let User = require('../models/users');
+const User = require('../models/users');
+const Forgotpassword = require('../models/ForgotPassword');
 
-let ForgotPassword = require('../models/ForgotPassword');
-
-let forgotPassword = async (req, res)=>{
-    try{
-        let {email} = req.body ;
-        let user = await User.findOne({where :{email}});
+const forgotpassword = async (req, res) => {
+    try {
+        const { email } =  req.body;
+        const user = await User.findOne({where : { email }});
         if(user){
-            let id = uuid.v4();
-            user.createForgotPassword({ id , active : true});
-           
-           // API_KEY = process.env.SEND_GRID_API_KEY;
-            sendGridMail.setApiKey(process.env.SEND_GRID_API_KEY);
+            const id = uuid.v4();
+            user.createForgotpassword({ id , active: true })
+                .catch(err => {
+                    throw new Error(err)
+                })
 
-            let msg = {
-                to : email ,
-                from:'yj.rocks.2411@gmail.com',
-                subject: 'Forget Password',
-                text:'and easy to do anywhere , even with Node.js',
-                html:`<a href='http://localhost:3000/password/resetpassword/${id}'>Rest Password</a>`
+            sgMail.setApiKey(process.env.SENGRID_API_KEY)
 
-            };
-            sendGridMail.send(msg).then((response)=>{
-                return res.status(response[0].statusCode)
-.json({message : 'Link to reset password'});            })
+            const msg = {
+                to: email, // Change to your recipient
+                from: 'yj.rocks.2411@gmail.com', // Change to your verified sender
+                subject: 'Sending with SendGrid is Fun',
+                text: 'and easy to do anywhere, even with Node.js',
+                html: `<a href="http://localhost:3000/password/resetpassword/${id}">Reset password</a>`,
+            }
+
+            sgMail
+            .send(msg)
+            .then((response) => {
+
+                // console.log(response[0].statusCode)
+                // console.log(response[0].headers)
+                return res.status(response[0].statusCode).json({message: 'Link to reset password sent to your mail ', sucess: true})
+
+            })
+            .catch((error) => {
+                throw new Error(error);
+            })
+
+            //send mail
+        }else {
+            throw new Error('User doesnt exist')
         }
+    } catch(err){
+        console.error(err)
+        return res.json({ message: err, sucess: false });
     }
-    catch(err){
-        return res.status(500).json({message : err , success : false})
-    }
-};
+
+}
+
+const resetpassword = (req, res) => {
+    const id =  req.params.id;
+    Forgotpassword.findOne({ where : { id }}).then(forgotpasswordrequest => {
+        if(forgotpasswordrequest){
+            forgotpasswordrequest.update({ active: false});
+            res.status(200).send(`<html>
+                                    <script>
+                                        function formsubmitted(e){
+                                            e.preventDefault();
+                                            console.log('called')
+                                        }
+                                    </script>
+                                    <form action="/password/updatepassword/${id}" method="get">
+                                        <label for="newpassword">Enter New password</label>
+                                        <input name="newpassword" type="password" required></input>
+                                        <button>reset password</button>
+                                    </form>
+                                </html>`
+                                )
+            res.end()
+
+        }
+    })
+}
 
 module.exports = {
-    forgotPassword
+    forgotpassword ,
+    resetpassword,
 }
