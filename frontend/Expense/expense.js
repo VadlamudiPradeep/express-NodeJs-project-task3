@@ -111,6 +111,15 @@ document.getElementById('rzp-button1').onclick = async function (e) {
      "key": response.data.key_id, // Enter the Key ID generated from the Dashboard
      "order_id": response.data.order.id,// For one time payment
      // This handler function will handle the success payment
+     "prefill": {
+        "name": "pradeep naidu",
+        "email": "vadlamudipradeep2000@gmail.com",
+        "contact": "0000000"
+      },
+     "theme":{
+        "color":"#3399c",
+     },
+     
      "handler": async function (response) {
         const res = await axios.post('http://localhost:3000/purchase/updatetransactionstatus',{
              order_id: options.order_id,
@@ -131,7 +140,13 @@ document.getElementById('rzp-button1').onclick = async function (e) {
 
   rzp1.on('payment.failed', function (response){
     console.log(response)
-    alert('Something went wrong')
+    alert(response.error.code);
+  alert(response.error.description);
+  alert(response.error.source);
+  alert(response.error.step);
+  alert(response.error.reason);
+  alert(response.error.metadata.order_id);
+  alert(response.error.metadata.payment_id);
  });
 }
 // Show Error
@@ -164,4 +179,26 @@ function showLeaderboard(){
     }
     document.getElementById("message").appendChild(inputElement);
 
+};
+
+// function download 
+
+function download(){
+    let token = localStorage.getItem('token')
+    axios.get('http://localhost:3000/user/download' , {headers : {'Authorization': token}})
+    .then((response)=>{
+        if(response.status === 201){
+            let newDate = new Date();
+            let a = document.createElement('a');
+            a.href = response.data.fileUrl ;
+            a.innerHTML = "Day to day Expenses"
+            a.newDate = newDate();
+            a.click();
+        }else{
+            throw new Error(response.data.message);
+        }
+    })
+    .catch((err)=>{
+showError(err);
+    })
 }
