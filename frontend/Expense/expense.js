@@ -124,6 +124,7 @@ document.getElementById('rzp-button1').onclick = async function (e) {
         const res = await axios.post('http://localhost:3000/purchase/updatetransactionstatus',{
              order_id: options.order_id,
              payment_id: response.razorpay_payment_id,
+             
          }, { headers: {"Authorization" : token} })
         
         console.log(res)
@@ -131,7 +132,8 @@ document.getElementById('rzp-button1').onclick = async function (e) {
          document.getElementById('rzp-button1').style.visibility = "hidden"
          document.getElementById('message').innerHTML = "You are a premium user "
          localStorage.setItem('token', res.data.token)
-         showLeaderboard()
+         showLeaderboard();
+         download();
      },
   };
   const rzp1 = new Razorpay(options);
@@ -165,40 +167,89 @@ function showPremiumuserMessage() {
 function showLeaderboard(){
     const inputElement = document.createElement("input")
     inputElement.type = "button"
-    inputElement.value = 'Show Leaderboard'
+    inputElement.value = 'Show Leaderboard';
+
+
+
     inputElement.onclick = async() => {
         const token = localStorage.getItem('token')
         const userLeaderBoardArray = await axios.get('http://localhost:3000/premium/showLeaderBoard', { headers: {"Authorization" : token} })
         console.log(userLeaderBoardArray)
+    
 
         var leaderboardElem = document.getElementById('leaderboard')
         leaderboardElem.innerHTML += '<h1> Leader Board </<h1>'
+        let table = document.createElement('table');
+        let tr = document.createElement('tr');
+      
+        let Description = document.createElement('th');
+       
+      
+        Description.innerHTML = 'Description';
+        Description.style.color = 'red';
+        Description.style.fontStyle =  'italic'   ;
+        Description.style.padding = "0.1rem";
+        Description.style.margin = "0.1rem";
+        Description.style.width = "10%";
+
+        let Category = document.createElement('th');
+        Category.innerHTML = 'Category';
+        Category.style.color = 'red'
+        Category.style.fontStyle =  'italic'   ;
+        Category.style.padding = "0.1rem";
+        Category.style.margin = "0.1rem";
+        
+
+        let Expenses = document.createElement('th');
+        Expenses.innerHTML ='Expenses';
+        Expenses.style.color = 'red';
+        Expenses.style.fontStyle =  'italic'   ;
+        Expenses.style.padding = "0.1rem";
+        Expenses.style.margin = "0.1rem"
+
+        
+       
+        tr.appendChild(Description);
+      
+        tr.appendChild(Category)
+        
+        tr.appendChild(Expenses);
+    
+        table.appendChild(tr);
+        
+        leaderboardElem.appendChild(table)
+        
         userLeaderBoardArray.data.forEach((userDetails) => {
-            leaderboardElem.innerHTML += `<li>Name -${userDetails.id}-${userDetails.name} Total Expense - ${userDetails.total_cost || 0} </li>`
+            
+            leaderboardElem.innerHTML += `<li>Name - ${userDetails.id} -  ${userDetails.name} Total Expense - ${userDetails.total_cost || 0} </li>`;
+            
         })
     }
     document.getElementById("message").appendChild(inputElement);
+   
 
 };
 
 // function download 
 
 function download(){
-    let token = localStorage.getItem('token')
-    axios.get('http://localhost:3000/user/download' , {headers : {'Authorization': token}})
-    .then((response)=>{
+    let token  = localStorage.getItem('token')
+    axios.get('http://localhost:3000/user/download', { headers: {"Authorization" : token} })
+    .then((response) => {
         if(response.status === 201){
-            let newDate = new Date();
-            let a = document.createElement('a');
-            a.href = response.data.fileUrl ;
-            a.innerHTML = "Day to day Expenses"
-            a.newDate = newDate();
+            //the backend is essentially sending a download link
+            //  which if we open in browser, the file would download
+            var a = document.createElement("a");
+            a.href = response.data.fileUrl;
+            let fileSave = "Expense.csv"
+            a.download = fileSave;
             a.click();
-        }else{
-            throw new Error(response.data.message);
+        } else {
+            throw new Error(response.data.message)
         }
+
     })
-    .catch((err)=>{
-showError(err);
-    })
+    .catch((err) => {
+        showError(err)
+    });
 }
