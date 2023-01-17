@@ -45,8 +45,8 @@ window.addEventListener('DOMContentLoaded',  () => {
     }
 
     axios.get('http://localhost:3000/expense/getExpense',{headers:{'Authorization': token}}).then(response => {
-    
-   response.data.expenses.forEach(expense=>{
+    var x = response.data.expenses;
+   x.forEach(expense=>{
    addNewExpensetoUI(expense);
    });
    })
