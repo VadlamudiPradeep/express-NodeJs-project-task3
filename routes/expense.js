@@ -9,6 +9,9 @@ router.post('/addExpense', userauthentication.authenticate,  expenseController.a
 
 router.get('/getExpense', userauthentication.authenticate ,  expenseController.getExpense)
 
-router.delete('/deleteExpense/:expenseid', userauthentication.authenticate , expenseController.deleteExpense)
+router.delete('/deleteExpense/:expenseid', userauthentication.authenticate ,   expenseController.deleteExpense)
+
+router.get('/download' , userauthentication.authenticate , expenseController.downloadExpenses)
+
 
 module.exports = router;

@@ -20,7 +20,7 @@ const forgotpassword = async (req, res) => {
 
             const msg = {
                 to: email, // Change to your recipient
-                from: 'yj.rocks.2411@gmail.com', // Change to your verified sender
+                from: 'vandlamudipradeepchoudhary@gmail.com', // Change to your verified sender
                 subject: 'Sending with SendGrid is Fun',
                 text: 'and easy to do anywhere, even with Node.js',
                 html: `<a href="http://localhost:3000/password/resetpassword/${id}">Reset password</a>`,
@@ -32,7 +32,7 @@ const forgotpassword = async (req, res) => {
 
                 // console.log(response[0].statusCode)
                 // console.log(response[0].headers)
-                return res.status(response[0].statusCode).json({message: 'Link to reset password sent to your mail ', sucess: true})
+                return res.status(response[0].statusCode).json({message: 'Link to reset password sent to your mail ', success: true})
 
             })
             .catch((error) => {
@@ -41,11 +41,11 @@ const forgotpassword = async (req, res) => {
 
             //send mail
         }else {
-            throw new Error('User doesnt exist')
+            throw new Error('User does not exist')
         }
     } catch(err){
         console.error(err)
-        return res.json({ message: err, sucess: false });
+        return res.json({ message: err, success: false });
     }
 
 }
