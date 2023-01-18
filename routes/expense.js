@@ -13,5 +13,5 @@ router.delete('/deleteExpense/:expenseid', userauthentication.authenticate ,   e
 
 router.get('/download' , userauthentication.authenticate , expenseController.downloadExpenses)
 
-
+router.get('/expensesData/:pageNo', userauthentication.authenticate , expenseController.Pagination);
 module.exports = router;

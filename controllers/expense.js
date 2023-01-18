@@ -117,3 +117,32 @@ exports.downloadExpenses =  async (req, res) => {
   }
 
 };
+let ITEMS_PER_PAGE = 3 ;
+exports.Pagination = async (req, res)=>{
+    var totalExpenses ;
+     let positive = 0.00 , negative =0.00;
+     let page = +req.params.pageNo || 1 ;
+     let totalItems = Expense.findAll({ where :{userId : req.user.id}})
+     .then(response =>{
+        totalExpenses = response.length ;
+        response.map( i=>{
+            (i.amount > 0  ) ? positive += i.amount : negative += i.amount ; 
+        })
+     }).catch(err => console.log(err));
+
+     await totalItems ; 
+     Expense.findAll({where : {UserId : req.user.id} , offset :(page - 1 ) *ITEMS_PER_PAGE , limit : ITEMS_PER_PAGE})
+     .then(response =>{
+        res.status(200).send({
+            response:response,
+            currentPage:page,
+            hasNextPage : ITEMS_PER_PAGE * page > totalExpenses,
+            hasPreviousPage: page > 1 ,
+            previousPage : page +1 , 
+            positive : positive ,
+            negative:negative,
+            lastPage:Math.ceil(totalExpenses / ITEMS_PER_PAGE),
+            totalItems: totalExpenses
+        });
+     })
+};
