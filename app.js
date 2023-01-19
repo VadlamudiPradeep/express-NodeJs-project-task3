@@ -1,6 +1,8 @@
 const path = require('path');
 
+
 const express = require('express');
+const app = express();
 var cors = require('cors')
 const sequelize = require('./util/database');
 const User = require('./models/users');
@@ -8,6 +10,11 @@ const Expense = require('./models/expenses');
 const Order = require('./models/orders');
 const Forgotpassword = require('./models/ForgotPassword');
 
+// Impoet helmet
+const helmet=require('helmet')
+app.use(helmet())
+
+require('dotenv').config();
 
 const userRoutes = require('./routes/user')
 const expenseRoutes = require('./routes/expense')
@@ -15,7 +22,7 @@ const purchaseRoutes = require('./routes/purchase')
 const premiumFeaturesRoutes = require('./routes/premiumFeatures');
 const ForgetPasswordRouter = require('./routes/resetpassword');
 
-const app = express();
+
 const dotenv = require('dotenv');
 
 // get config vars
@@ -34,6 +41,9 @@ app.use('/purchase', purchaseRoutes);
 app.use('/premium' , premiumFeaturesRoutes)
 app.use('/password' , ForgetPasswordRouter);
 
+
+
+
 User.hasMany(Expense);
 Expense.belongsTo(User);
 
@@ -42,9 +52,9 @@ Order.belongsTo(User);
 User.hasMany(Forgotpassword);
 Forgotpassword.belongsTo(User);
 
-sequelize.sync()
+sequelize.sync({force : true})
     .then(() => {
-        app.listen(3000);
+        app.listen(process.env.PORT || 3000);
     })
     .catch(err => {
         console.log(err);
