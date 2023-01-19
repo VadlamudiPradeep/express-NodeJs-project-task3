@@ -13,7 +13,7 @@
         <h2>Expense App</h2>
       </nav>
     </header>
-
+<div class="container">
     <main style="border: 5px red solid; background-color: orange;">
       <form class="form" id="formId" action="#" onsubmit="saveToDB(event)">
         <div class="form-control">
@@ -27,6 +27,7 @@
             <option value="Food">Food</option>
             <option value="Electricity">Electricity</option>
             <option value="Movie">Movie</option>
+            <option value="Rent">Rent</option>
           </select><br><br>
         </div>
         <button type="submit">Add Expense</button>
@@ -36,18 +37,31 @@
 <div id="message"></div>
 
 
+
      <button id="rzp-button1">Buy Premium</button>
      <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
-          
+     <button onclick="download()" id="downloadexpense">Download File</button>
 <!-- Pagination -->
       <ul id="list" class="list"></ul>      
       
         <ul id="leaderboard" style="width:100% ; size:5px ; background-color: orange;" ></ul>
   <!--Pagination container-->
       <div class="pages-container"></div>
- 
-      <button onclick="download()" id="downloadexpense">Download File</button>
-    
+      <div class="rows">
+        <p>Records per page:</p>
+        <select name="records" id="rows">
+            <option value="3">3</option>
+            <option value="5">5</option>
+            <option value="10">10</option>
+            <option value="15">15</option>
+            <option value="20">20</option>
+            <option value="25">25</option>
+            <option value="50">50</option>
+            <option value="100">100</option>
+        </select>
+    </div>            
+
+    </div>
     </main>
 
     <!-- axios - for network call --> 
