@@ -217,21 +217,21 @@ function download(){
         if(response.status === 201){
             // the bcakend is essentially sending a download link
             // which if we open in browser, the file would download
-            // var a = document.createElement("a");
-            // a.href = response.data.fileUrl;
-            // a.download = 'myexpense.csv';
-            // a.click();
+            var a = document.createElement("a");
+            a.href = response.data.fileUrl;
+            a.download = 'myexpense.csv';
+            a.click();
 
-            const href = URL.createObjectURL(response.data);
-            const link = document.createElement('a');
-            link.href = href;
-            link.setAttribute('download', 'expenses.txt'); //or any other extension
-            document.body.appendChild(link);
-            link.click();
-            // clean up "a" element & remove ObjectURL
-            document.body.removeChild(link);
-            URL.revokeObjectURL(href);
-            console.log(response)
+            // const href = URL.createObjectURL(response.data);
+            // const link = document.createElement('a');
+            // link.href = href;
+            // link.setAttribute('download', 'expenses.txt'); //or any other extension
+            // document.body.appendChild(link);
+            // link.click();
+            // // clean up "a" element & remove ObjectURL
+            // document.body.removeChild(link);
+            // URL.revokeObjectURL(href);
+            // console.log(response)
         } else {
             throw new Error(response.data.message)
         }

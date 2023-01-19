@@ -1,4 +1,3 @@
-
 const jwt = require('jsonwebtoken');
 const User = require('../models/users');
 
@@ -27,6 +26,3 @@ module.exports = {
     authenticate
 }
 
-module.exports = {
-    authenticate
-}
