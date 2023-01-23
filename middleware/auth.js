@@ -10,7 +10,7 @@ const authenticate = (req, res, next) => {
         console.log('userID >>>> ', user.userId)
         User.findByPk(user.userId).then(user => {
 
-            req.user = user; 
+            req.user = user; ///ver
             next();
         })
 
@@ -25,4 +25,6 @@ const authenticate = (req, res, next) => {
 module.exports = {
     authenticate
 }
+
+
 
